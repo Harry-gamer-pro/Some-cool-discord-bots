@@ -20,11 +20,15 @@ current_test_Guild = discord.Object(id=1393270677850689606)
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-print(os.path.exists("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-200_Aircraft.png"))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def img(filename):
+    return os.path.join(SCRIPT_DIR, filename)
 
 
 
-Nolinor_Halo = bot.get_emoji(1393271227065307237)
+def get_nolinor_emoji(guild):
+    return discord.utils.get(guild.emojis, name="nolinor_holo") or ""
 
 
 
@@ -151,7 +155,7 @@ async def ping(interaction: discord.Interaction):
 
 @bot.tree.command(name="about_nilinor", description="Learn about Nolinor Aviation", guild=current_test_Guild)
 async def about_nolinor(interaction: discord.Interaction):
-    embed = discord.Embed(title=f" {Nolinor_Halo} | Nolinor Aviation", color=discord.Color.from_str("#1b2a4a"))
+    embed = discord.Embed(title=f" {get_nolinor_emoji(interaction.guild)} | Nolinor Aviation", color=discord.Color.from_str("#1b2a4a"))
     embed.add_field(name="Who we are", value="Nolinor Aviation is a Canadian airline that specializes in charter services, cargo transport, and passenger flights to remote destinations. We have been in operation since 1992 and are known for our exceptional service, safety record and awesome old planes!", inline=False)
     embed.add_field(name="Our fleet", value="We operate a diverse fleet of aircraft, including the Boeing 737-200, Boeing 737-300, and the 737-400. Our fleet allows us to interchange between cargo and passenger services as well as a mix of both. We also serve a wide range of destinations and meet the unique needs of our customers.", inline=False)
     embed.add_field(name="Our services", value="We offer a variety of services, including charter flights for individuals and groups, cargo transport for businesses, and passenger flights to remote locations. Our team of experienced pilots and staff are dedicated to providing a safe and comfortable travel experience for all of our customers.", inline=False)
@@ -264,7 +268,7 @@ class supportModal(discord.ui.Modal, title ="Support Ticket"):
         await channel.send(embed=embed, view=CloseView())
 
         await channel.send(
-            f"{Nolinor_Halo} | __Nolinor Support__\n\n"
+            f"{get_nolinor_emoji(guild)} | __Nolinor Support__\n\n"
             f"Hello {interaction.user.mention}, thank you for contacting Nolinor support. "
             f"If you have __not__ already stated your question, please do so now. "
             f"If you __have__, then please allow us to review the enquiry and get back to you!\n\n"
@@ -306,7 +310,7 @@ class ChartersModal(discord.ui.Modal, title="Charter Request"):
         await channel.send(embed=embed, view=CloseView())
 
         await channel.send(
-            f"{Nolinor_Halo} | __Nolinor Charters__\n\n"
+            f"{get_nolinor_emoji(guild)} | __Nolinor Charters__\n\n"
             f"Hello {interaction.user.mention}, thank you for your interest in chartering with Nolinor Aviation. "
             f"A member of our team will review your proposal and be in touch shortly. If you have any supporting information to share, please include it below.\n\n"
             f"• We record all ticket submissions for safety and monitoring reasons, which means "
@@ -338,7 +342,7 @@ class partnershipModal(discord.ui.Modal, title="Partnership Request"):
         await channel.send(embed=embed, view=CloseView())
 
         await channel.send(
-            f"{Nolinor_Halo} | __Nolinor Support__\n\n"
+            f"{get_nolinor_emoji(guild)} | __Nolinor Partnerships__\n\n"
             f"Hello {interaction.user.mention}, thank you for your interest in partnering with Nolinor Aviation "
             f" A member of our team will review your proposal and be in touch shortly. If you have any supporting information to share, please include it below.\n\n"
             f"• We record all ticket submissions for safety and monitoring reasons, which means "
@@ -458,8 +462,8 @@ class charter_dropdown(discord.ui.Select):
             )
             embed.set_image(url="attachment://aircraft.png")
             files = [
-                discord.File("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-200_Aircraft.png"),
-                discord.File("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-200_config.png")
+                discord.File(img("737-200_Aircraft.png")),
+                discord.File(img("737-200_config.png"))
             ]
 
 
@@ -477,8 +481,8 @@ class charter_dropdown(discord.ui.Select):
                 inline=False
             )
             files = [
-                discord.File("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-300_Aircraft.png"),
-                discord.File("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-300_config.png")
+                discord.File(img("737-300_Aircraft.png")),
+                discord.File(img("737-300_config.png"))
             ]
         elif self.values[0] == "737-400":
             embed.add_field(
@@ -492,8 +496,8 @@ class charter_dropdown(discord.ui.Select):
                 inline=False
             )
             files = [
-                discord.File("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-400_Aircraft.png"),
-                discord.File("C:/Users/harri/OneDrive/Python/Discord/Nolinor_Bot_Images/737-400_config.png")
+                discord.File(img("737-400_Aircraft.png")),
+                discord.File(img("737-400_config.png"))
             ]
         await interaction.response.send_message(embed=embed, files=files, ephemeral=True)
 
