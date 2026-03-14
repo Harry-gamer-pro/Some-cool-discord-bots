@@ -1,0 +1,7 @@
+__pycache__
+*.pyc
+*.log
+.env
+Nilinor_bot_local.py
+Discord Bot Tutorial.py
+.idea
