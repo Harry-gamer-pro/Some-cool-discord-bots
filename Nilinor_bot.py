@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import asyncio
 from datetime import datetime, timedelta
+from aiohttp import web
 
 
 load_dotenv()
@@ -527,6 +528,19 @@ async def Charter_setup(ctx):
         await ctx.send(f'Sorry {ctx.author.mention}, you do not have permission to use this command.')
 
 #-----------------------------------------------------------------------------------------------------------------------
+# Fake web server to keep Render happy
+async def start_web_server():
+    async def health(request):
+        return web.Response(text="Bot is running!")
+    app = web.Application()
+    app.router.add_get("/", health)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    port = int(os.environ.get("PORT", 10000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    print(f"Web server running on port {port}")
+
 @bot.event
 async def on_ready():
     global log_channel, ticket_log_channel
@@ -535,6 +549,7 @@ async def on_ready():
     bot.add_view(ticketView())
     bot.add_view(CloseView())
     bot.add_view(DropdownView())
+    await start_web_server()
     print(f'{bot.user.name} has connected to Discord!')
     for guild in bot.guilds:
         print(f"- {guild.name} (ID: {guild.id})")
