@@ -303,7 +303,7 @@ async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"Pong! Latency: {latency}ms")
 
 
-@bot.tree.command(name="about_nilinor", description="Learn about Nolinor Aviation", guild=current_test_Guild)
+@bot.tree.command(name="about_nolinor", description="Learn about Nolinor Aviation", guild=current_test_Guild)
 async def about_nolinor(interaction: discord.Interaction):
     embed = discord.Embed(title=f" {get_nolinor_emoji(interaction.guild)} | Nolinor Aviation", color=discord.Color.from_str("#1b2a4a"))
     embed.add_field(name="Who we are", value="Nolinor Aviation is a Canadian airline that specializes in charter services, cargo transport, and passenger flights to remote destinations. We have been in operation since 1992 and are known for our exceptional service, safety record and awesome old planes!", inline=False)
